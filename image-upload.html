@@ -1,0 +1,63 @@
+<!-- Form for uploading images. -->
+<form
+        autocomplete="off"
+        class="lg:col-span-9 py-6 px-4 sm:p-6 lg:pb-8"
+        enctype="multipart/form-data"
+        hx-enctype="multipart/form-data"
+        hx-post="{{ listing_url }}"
+        hx-swap="outerHTML"
+        hx-target="#images_form"
+        hx-trigger="submit"
+        id="images_form"
+        method="post"
+>
+    {% csrf_token %}
+    <div id="div_id_image" class="mb-3">
+        <!-- Hidden file input for selecting images. -->
+        <input
+                type="File"
+                name="image"
+                value=""
+                class="hidden"
+                multiple="multiple"
+                required=""
+                id="id_image"
+        />
+        <!-- Custom button for selecting images. -->
+        <label for="id_image"
+               class="inline-block bg-secondary text-primary rounded-md px-4 py-2 cursor-pointer hover:bg-primary_dark">
+            Select Images
+        </label>
+    </div>
+
+    <!-- Container to display selected images. -->
+    <div id="image-container" class="flex gap-5">
+
+    </div>
+
+    <!-- Submit button. -->
+    <input
+            type="submit"
+            name="submit"
+            value="Save"
+            class="mt-6 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-accent hover:bg-accent_dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent focus:ring-offset-accent_dark sm:text-sm"
+            id="submit-id-submit"
+    />
+</form>
+
+<script>
+    // When files are selected, display them in the container.
+    document.getElementById('id_image').addEventListener('change', function (event) {
+        const files = event.target.files;
+        const imageContainer = document.getElementById('image-container');
+        
+        imageContainer.innerHTML = '';
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const img = document.createElement('img');
+            img.classList.add('w-48', 'h-48', 'rounded-md');
+            img.src = URL.createObjectURL(file);
+            imageContainer.appendChild(img);
+        }
+    });
+</script>
